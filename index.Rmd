@@ -74,6 +74,12 @@ no_cities = emissions %>%
 knitr::kable(no_cities, caption = "Number of Cities with Observations Per Country", col.names = c("Country","Number of Cities"))
 ```
 
+*****
+
+I first wanted to see how many cities from each country reported their emissions for 2016.  Both the chart above and the graph below display this statistic.  It is clear that out of the 187 cities that reported their carbon emissions in 2016, the United States has the most cities in this dataset at 63 cities.  Other notable cities include Brazil, Canada, Italy, and Portugal.
+
+*****
+
 <center>
 ```{r, echo=F, message=F, warning=F}
 ggplot(data = no_cities, aes(x = Country, y= Number_of_Cities), las=2) +
@@ -85,6 +91,23 @@ ggplot(data = no_cities, aes(x = Country, y= Number_of_Cities), las=2) +
        caption = 'Based on CDP Dataset')
 ```
 </center>
+
+*****
+
+```{r, echo=F, message=F, warning=F}
+top5 = emissions %>% 
+  select(`City Short Name`, Country, `Total City-wide Emissions (metric tonnes CO2e)`) %>% 
+  arrange(-`Total City-wide Emissions (metric tonnes CO2e)`) %>% 
+  head(5)
+
+knitr::kable(top5, caption = "Top 5 Cities with Most CO2 Emissions", col.names = c("City","Country","Total City-Wide Emissions (metric tonnes CO2e"), "simple")
+```
+
+*****
+
+After looking at the dataset a little more, I wanted to plot the location of all these cities on a map so I could see if there were any trends in terms of location for the cities that reported their emissions.  However, I noticed that the city location variable in the dataset was one long string containing both the longitude and latitude coordinate.  Because of this, I was forced to split the column into two separate variables: Longitude and Latitude.  After this, I removed the parenthesis from the columns so my data was ready to be plotted on a world map. 
+
+*****
 
 <center>
 ```{r, echo=F, message=F, warning=F}
@@ -102,6 +125,12 @@ ggplot(data = world) +
        caption = "Taken from 2016 Citywide Emissions Dataset")
 ```
 </center>
+
+*****
+
+Once I plotted all the cities in the dataset, I moved on to the next step which was to isolate all the United States cities as these are the cities that I will be looking at when comparing them to housing data.  Once I separated all 63 of the U.S. cities from the rest of them, I went ahead and plotted them on a map of the continental United States due to the fact that no cities in Alaska, Hawaii, or Puerto Rico were reported in the dataset.
+
+*****
 
 <center>
 ```{r, echo=F, message=F, warning=F}
@@ -126,4 +155,24 @@ ggplot() +
        caption = "Taken from 2016 Citywide Emissions Dataset")
 ```
 </center>
+
+*****
+
+```{r, echo=F, message=F, warning=F}
+top5US = emissions %>% 
+  filter(Country == 'USA') %>% 
+  select(`City Short Name`, Country, `Total City-wide Emissions (metric tonnes CO2e)`) %>% 
+  arrange(-`Total City-wide Emissions (metric tonnes CO2e)`) %>% 
+  head(5)
+
+knitr::kable(top5US, caption = "Top 5 U.S. Cities with Most CO2 Emissions", col.names = c("City","Country","Total City-Wide Emissions (metric tonnes CO2e"), "simple")
+```
+
+*****
+
+## VII: Appendix
+
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+
+```
 
