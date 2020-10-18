@@ -1,0 +1,129 @@
+---
+title: "Solar Panel Proposal"
+author: "Tyler Chia"
+output:
+  html_document:
+    theme: darkly
+---
+
+## I: Abstract
+As we enter the 3rd decade of the 21st century, the disastrous effects of climate change are becoming more and more clear and at some point, will become irreversible.  According to NASA, carbon dioxide levels are the highest they have been in 650,000 years and the global temperature has risen 2 degrees Fahrenheit since 1880.  In addition, the polar ice sheets are losing 427 billion metric tons per year and sea level rises 3.3 millimeters per year.  Scientists have reported that global temperatures could reach an irreversible tipping point by 2030 if drastic measures are not taken to slow down the rapidly occurring climate change.  In addition to environmental impact assessment, mitigation strategies must be set into place in order to insure that future generations will continue to be able to live on a habitable planet.
+
+*****
+
+## II: Introduction
+One way to minimize the amount of carbon released into the atmosphere is through the use of solar panels as a source of renewable energy.  In this project, using a combination of data science methods and thorough research, I will propose a mitigation strategy that requires certain homeowners, based on the purchase price of their house, to install solar panels as a way of reducing carbon emissions.  I will first use a dataset containing the annual number of metric tons of carbon emissions for certain cities in the United States.  While it would be interesting to see the carbon emissions from every city in the U.S. this project will be on a smaller scale, only looking at prominent cities across the country.  I will then look at more data containing median housing prices for these same specific cities.  Exploring the data and using basic math will allow me to find the percentage change in carbon emissions per city as an indicator of how well my proposal will work.  In the end, I would like to see the percentage change in carbon emissions per city if certain housing owners are required to install solar panels.
+
+*****
+
+## III: Data
+The dataset that I used was from the CDP which is an international non-profit organization based in the United Kingdom, Germany, and the U.S.  The main purpose of the company is to help companies and cities disclose the environmental impact of major corporations.  The data came as a CSV file and has 187 observations for the 187 cities in the dataset.  In addition, the data has 16 variables.
+
+- Account Number
+- City Name
+- Country
+- City Short Name
+- C40
+- Reporting Year
+- Measurement Year
+- Primary Methodology
+- Methodology Details
+- Total City-Wide Emissions in Metric Tons of CO2
+- Increase/Decrease From Last Year
+- Reason for Increase/Decrease
+- Current Population Year
+- Population
+- City Location
+- Country Location
+
+The main variables that I will be looking at are the City Name, Country, Total City-Wide Emissions of CO2, Population, and City Location.
+
+*****
+
+## IV: Exploratory Data Analysis
+
+```{r, echo=F, message=F, warning=F}
+library(tidyverse)
+library(sf)
+library(readr)
+library(USAboundaries)
+library(USAboundariesData)
+library(rnaturalearth)
+library(rnaturalearthdata)
+```
+
+```{r, echo=F, message=F, warning=F}
+emissions <- read_csv("~/github/Solar-Panel-Proposal/data/2016_-_Citywide_Emissions__Map.csv")
+
+emissions = emissions %>% 
+  separate(`City Location`, c('Lat', 'Long'), sep = ",")
+
+emissions$Lat <- substring(emissions$Lat, 2)
+emissions$Long <- substr(emissions$Long, 1, nchar(emissions$Long)-1)
+
+emissions$Lat = as.numeric(emissions$Lat)
+emissions$Long = as.numeric(emissions$Long)
+
+```
+
+```{r, echo=F, message=F, warning=F}
+no_cities = emissions %>% 
+  group_by(Country) %>% 
+  summarise(Number_of_Cities = n())
+
+knitr::kable(no_cities, caption = "Number of Cities with Observations Per Country", col.names = c("Country","Number of Cities"))
+```
+
+<center>
+```{r, echo=F, message=F, warning=F}
+ggplot(data = no_cities, aes(x = Country, y= Number_of_Cities), las=2) +
+  geom_bar(stat="identity") +
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+  labs(x = 'Country',
+       y = 'Number of Cities',
+       title = 'Total Number of Cities that Reported Their Annual Emissions in 2016',
+       caption = 'Based on CDP Dataset')
+```
+</center>
+
+<center>
+```{r, echo=F, message=F, warning=F}
+hos_sf = st_as_sf(emissions, coords = c("Long", "Lat"), crs = 4326)
+
+world = ne_countries(scale = 'medium', returnclass = 'sf') %>% 
+  st_transform(4326)
+
+ggplot(data = world) +
+  geom_sf() +
+  geom_sf(data = hos_sf, color = "red") +
+  labs(title = "Cities That Disclosed Their City-Wide Emissions in 2016",
+       x = "Longitude",
+       y = "Latitude",
+       caption = "Taken from 2016 Citywide Emissions Dataset")
+```
+</center>
+
+<center>
+```{r, echo=F, message=F, warning=F}
+USA = USAboundaries::us_states() %>% 
+  st_transform(4326) %>% 
+  filter(name != 'Alaska' & name != 'Puerto Rico' & name != 'Hawaii')
+
+counties = USAboundaries::us_counties() %>% 
+  st_transform(4326) %>% 
+  filter(state_name != 'Alaska' & state_name != 'Puerto Rico' & state_name != 'Hawaii')
+
+us_emissions <- hos_sf %>% 
+  filter(Country == 'USA')
+
+ggplot() +
+  geom_sf(data = USA, color = "blue") +
+  geom_sf(data = us_emissions, color = "red") +
+  coord_sf(datum = st_crs(us_emissions)) +
+  labs(title = "U.S. Cities That Disclosed Their City-Wide Emissions in 2016",
+       x = "Longitude",
+       y = "Latitude",
+       caption = "Taken from 2016 Citywide Emissions Dataset")
+```
+</center>
+
