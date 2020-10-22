@@ -8,12 +8,19 @@ One way to minimize the amount of carbon released into the atmosphere is through
 
 ## IV: Exploratory Data Analysis
 
-## V: Proposal
+## V: Analysis and Discussion
 
-## VI: References
+## VI: Conclusion
+
+## VII: References
 1. https://data.cdp.net/Emissions/2016-Citywide-Emissions-Map/iqbu-zjaj
 2. https://climate.nasa.gov/
 3. https://abcnews.go.com/International/united-nations-report-details-looming-climate-crisis/story?id=58354235
-4. 
+4. Zillow.com
+5. https://www.point2homes.com/US/Neighborhood/IL/Lake-Forest-Demographics.html
+6. https://www.neighborhoodscout.com/il/alton/real-estate
+7. https://www.census.gov/quickfacts/
+8. https://en.wikipedia.org/wiki/Brisbane,_California
+10. 
 
-## VII: Appendix
+## VIII: Appendix
