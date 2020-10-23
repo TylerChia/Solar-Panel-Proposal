@@ -12,6 +12,8 @@ One way to minimize the amount of carbon released into the atmosphere is through
 
 ## VI: Conclusion
 
+$$ Conversion Rate \cdot 6351kWh \cdot Number of Houses = CO2 Saved $$
+
 ## VII: References
 1. https://data.cdp.net/Emissions/2016-Citywide-Emissions-Map/iqbu-zjaj
 2. https://climate.nasa.gov/

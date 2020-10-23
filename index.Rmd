@@ -52,6 +52,7 @@ library(USAboundaries)
 library(USAboundariesData)
 library(rnaturalearth)
 library(rnaturalearthdata)
+library(scales)
 ```
 
 ```{r, echo=F, message=F, warning=F}
@@ -106,7 +107,8 @@ top5 = emissions %>%
   arrange(-`Total City-wide Emissions (metric tonnes CO2e)`) %>% 
   head(5)
 
-knitr::kable(top5, caption = "Top 5 Cities with Most CO2 Emissions", col.names = c("City","Country","Total City-Wide Emissions (metric tonnes CO2e)"), "simple")
+knitr::kable(top5, caption = "Top 5 Cities with Most CO2 Emissions", col.names = c("City","Country","Total City-Wide Emissions (metric tonnes CO2e)"), "simple", format.args = list(big.mark = ",", 
+  scientific = FALSE))
 ```
 
 *****
@@ -174,8 +176,10 @@ top5US = emissions %>%
   select(`City Short Name`, Country, `Total City-wide Emissions (metric tonnes CO2e)`) %>% 
   arrange(-`Total City-wide Emissions (metric tonnes CO2e)`) %>% 
   head(5)
+  
 
-knitr::kable(top5US, caption = "Top 5 U.S. Cities with Most CO2 Emissions", col.names = c("City","Country","Total City-Wide Emissions (metric tonnes CO2e)"), "simple")
+knitr::kable(top5US, caption = "Top 5 U.S. Cities with Most CO2 Emissions", col.names = c("City","Country","Total City-Wide Emissions (metric tonnes CO2e)"), "simple", format.args = list(big.mark = ",", 
+  scientific = FALSE))
 ```
 
 *****
@@ -194,7 +198,8 @@ top5percapita = USAemissions %>%
   arrange(-Per_Capita) %>% 
   head(5)
   
-knitr::kable(top5percapita, caption = "Top 5 U.S. Cities with Most CO2 Emissions Per Capita", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Current Population Year", "Current Population", "CO2 Tonnes Per Capita"), "simple")
+knitr::kable(top5percapita, caption = "Top 5 U.S. Cities with Most CO2 Emissions Per Capita", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Current Population Year", "Current Population", "CO2 Tonnes Per Capita"), "simple", format.args = list(big.mark = ",", 
+  scientific = FALSE))
 ```
 
 *****
@@ -216,8 +221,10 @@ bot5price = USAemissions %>%
   arrange(Price) %>% 
   head(5)
 
-knitr::kable(top5price, caption = "Top 5 Most Expensive Cities for Housing", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Average Housing Price"),"simple")
-knitr::kable(bot5price, caption = "Top 5 Most Cheapest Cities for Housing", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Average Housing Price"),"simple")
+knitr::kable(top5price, caption = "Top 5 Most Expensive Cities for Housing", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Typical Housing Price"),"simple", format.args = list(big.mark = ",", 
+  scientific = FALSE))
+knitr::kable(bot5price, caption = "Top 5 Most Cheapest Cities for Housing", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Typical Housing Price"),"simple", format.args = list(big.mark = ",", 
+  scientific = FALSE))
 ```
 
 *****
@@ -236,7 +243,8 @@ top5count = USAemissions %>%
   arrange(-Num_Houses) %>% 
   head(5)
 
-knitr::kable(top5count, caption = "Top 5 Cities With Most Houses", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Number of Households"),"simple")
+knitr::kable(top5count, caption = "Top 5 Cities With Most Houses", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Number of Households"),"simple", format.args = list(big.mark = ",", 
+  scientific = FALSE))
 ```
 
 *****
@@ -244,6 +252,131 @@ knitr::kable(top5count, caption = "Top 5 Cities With Most Houses", col.names = c
 ## V: Analysis and Discussion
 In order to perform any real analysis on this data and determine magnitude of the effects of solar panels on carbon emissions, I first need to research the average price of solar panel installation.  In addition, I will need to understand how much less CO2 emissions are produced when using a single solar panel as opposed to using normal electricity.  With this information I will be able to calculate the ratio of solar panel costs to housing price per city in order to determine in which cities it is financially feasible to enforce a solar panel installation requirement.  The amount of CO2 emissions saved by using solar panels will allow me to simply calculate the percentage change per city in CO2 emissions if certain households are required to install these panels.  In addition, I can calculate the change in carbon emissions in all 63 of these reported U.S. cities if everyone was required to install solar panels.
 
+According to [Energy Sage](https://news.energysage.com/how-much-does-the-average-solar-panel-installation-cost-in-the-u-s/), the average price for a 6 kilowatt solar panel system is $13,124 in the United States in 2020 after tax credits are taken from the original average price of $17,760.  For this project, I have made the assumption that everyone will install a 6kW solar panel system due to the fact that it is the most frequently installed system according to the research I have done.  
+
+Now that I have the average price for a 6kW solar panel system, I will calculate the relationship between solar panel price and housing price per city as a percentage.  This will give me an idea of what is affordable in each city based on the typical housing price.  This percentage will be added to the dataframe as a new column.
+
+```{r, echo=F, message=F, warning=F}
+USAemissions = USAemissions %>% 
+  mutate(percent_of_price = (13124 / Price) * 100)
+
+percentprice = USAemissions %>% 
+  select(`City Short Name`, Price, percent_of_price) %>% 
+  head(5)
+
+knitr::kable(percentprice, caption = "Cost of 6kw Solar System as % of Typical Housing Price", col.names = c("City","Typical Housing Price", "Solar Panel Cost as % of House Price"),"simple", format.args = list(big.mark = ",", 
+  scientific = FALSE))
+```
+*****
+
+The chart above is shown just to give an idea of what the percentage of housing prices are the cost of a 6kW solar panel system.  For example, the typical house in Brisbane, California costs $1,050,747.  The average cost of a 6kw solar panel system is about 1.24% of the housing price.
+
+*****
+
+Finding the amount of CO2 emissions prevented per solar panel system is a little more difficult to determine due to a number of factors.  Firstly, it is difficult to estimate the production of solar panel system due to the fact that production can vary wildly based on location and placement.  For example, places such as Seattle that obviously do not get a lot of constant sunlight will have less production from their solar panels than states such as Arizona or Nevada where there are deserts and lots of sunlight throughout the majority of the year.  In addition, solar panel production depends on placement factors such as the angle or which side of the roof on which it is placed.  
+
+For these reasons, I will be using a VERY rough estimate taken from [Solar Reviews](https://www.solarreviews.com/blog/how-much-does-a-6kw-solar-power-system-cost-and-how-much-electricity-does-it-produce).  According to their website, a 6kw solar panel system can produce between 6351kWh and 10,074kWh per year in optimal conditions.  With all the varying factors that affect solar panels in mind, I am going to use the lower end of this spectrum as an estimate to how much a 6kW solar panel system produces during the course of one year.  
+
+Estimate: 6351kWh per year
+
+The next issue I run into is converting this production number into an measure of how much CO2 is emitted into the atmosphere.  The problem with this is that each state has different regulation laws which changes the amount of CO2 created by electricity production.  I will be taking 2018 data from the [U.S. Energy Information Administration (EIA)](https://www.eia.gov/electricity/state/california/index.php) in order to determine how many pounds of carbon dioxide were released into the atmosphere for every 1 kWh of standard electricity produced.  I will create a vector for these conversion rates and add it to the dataframe based on the state each city is in.  
+
+*****
+
+```{r, echo=F, message=F, warning=F}
+convertrate = c(0.846, 0.846, 0.302, 0.302, 0.491, 0.772, 1.060, 0.814, 1.060, 0.491, 0.491, 0.491, 1.189, 1.775, 1.379, 0.491, 1.361, 0.010, 0.919, 1.060, 1.060, 1.379, 0.787, 0.464, 0.772, 0.464, 1.379, 0.933, 0.790, 0.896, 0.491, 0.491, 0.772, 1.167, 0.808, 0.846, 1.361, 1.188, 1.379, 0.787, 0.777, 0.491, 0.491, 1.697, 1.066, 0.790, 1.094, 0.464, 0.491, 0.491, 0.933, 0.787, 0.491, 0.491, 1.697, 0.787, 0.777, 0.772, 0.491, 0.491, 0.201, 0.808, 0.919)
+
+USAemissions$conversion_rate = convertrate
+
+conversionrate = USAemissions %>% 
+  select(`City Short Name`, conversion_rate) %>% 
+  head(5)
+
+knitr::kable(conversionrate, caption = "Pounds of CO2 Emitted per kWh Produced", col.names = c("City", "Conversion Rate (lbs CO2/kWh)"),"simple")
+```
+
+*****
+
+The chart above is a quick sample of some of the conversion rates for the first five cities in the dataset.
+
+As a side note, I would like to quickly point out that when inputting the conversion rates, I noticed that Vermont had the lowest conversion rate at 0.010 pounds of CO2 per kWh of electricity produced.  I dug a little deeper and found that, "In 2019, Vermont generated 99.9% of its electricity from renewable resources, a larger share than in any other state."
+
+I will now multiply these conversion rates by my estimate of how much electricity is produced in one year by a 6kW solar panel system.  Then, I will multiply this number by the number of houses per city.  This result will give me the total amount of CO2 in pounds reduced if every house in the city implemented a 6kW solar panel system.  
+
+<center>
+$$ CO2 Saved (pounds) = 6351 kWh \cdot Conversion Rate \cdot Number of Houses $$
+</center>
+
+I then have to convert this number from pounds to metric tons in order to compare it to the total city-wide emissions from 2016. 
+
+<center>
+$$ CO2Saved(Metric Tons) = CO2Saved(pounds) / 2204.6  $$
+</center>
+
+```{r, echo=F, message=F, warning=F}
+USAemissions = USAemissions %>% 
+  mutate(CO2_saved_lbs = 6351 * conversion_rate * Num_Houses)
+
+USAemissions = USAemissions %>% 
+  mutate(CO2_saved_tons = CO2_saved_lbs / 2204.6)
+
+amountsaved = USAemissions %>% 
+  select(`City Short Name`, CO2_saved_tons) %>% 
+  head(5)
+
+knitr::kable(amountsaved, caption = "CO2 Saved if Every House Has 6kW Solar System", col.names = c("City", "CO2 Saved (metric tons)"),"simple", format.args = list(big.mark = ",", 
+  scientific = FALSE))
+```
+
+*****
+
+Chart above containing the first five cities in the dataset is given as an example for how much less carbon emissions are emitted if every house in each city were to install a 6kW solar panel system.
+
+*****
+
+Now that I have the amount of CO2 saved per year per city, I would like to calculate the change that would occur in the total city-wide emissions if every housing owner were to install this solar panel system.
+
+```{r, echo=F, message=F, warning=F}
+USAemissions = USAemissions %>% 
+  mutate(percentchange = ((`Total City-wide Emissions (metric tonnes CO2e)` - (`Total City-wide Emissions (metric tonnes CO2e)` - CO2_saved_tons)) / `Total City-wide Emissions (metric tonnes CO2e)`) * 100)
+
+percentdec = USAemissions %>% 
+  select(`City Short Name`, percentchange) 
+
+knitr::kable(percentdec, caption = "Percent Decrease in CO2 Emissions", col.names = c("City", "Percent Decrease"),"simple")
+```
+
+*****
+
+Just to reiterate, the chart above shows the percentage decrease in CO2 emissions from 2016 if every home in each city were required to install a 6kW solar panel system.
+
+One thing that I noticed as an outlier was Indianapolis as it had a 79% decrease in carbon emissions.  At first, I thought my numbers were off so I checked my math.  However, it turns out that in 2018 in Indiana, for every kWh of electricity produced, 1.775 pounds of CO2 were released, which is significantly higher than most cities.  When you take away all that CO2 by implementing solar panels, the percent decrease would therefore be higher than normal.
+
+*****
+
+Getting to my next step, I want to calculate the percentage decrease for all 63 of these cities combined.
+
+```{r, echo=F, message=F, warning=F}
+final = data.frame("Total City-Wide Emissions" = 431948409, "Total City-Wide Emissions w Panels" = 398189422, "Total CO2 Saved" = 33758987)
+
+final1 = final %>% 
+  mutate(percentchanger = (Total.CO2.Saved / Total.City.Wide.Emissions) * 100)
+final2 = final %>% 
+  mutate(Emissions_with = Total.City.Wide.Emissions - Total.CO2.Saved) %>% 
+  select(Total.City.Wide.Emissions, Emissions_with)
+
+knitr::kable(final1, caption = "Percent Decrease in CO2 Emissions For all 63 Reported Cities", col.names = c("Total Emissions 2016", "Total Emissions with Solar Panel Plan", "Total CO2 Saved", "Percent Decrease"), "simple", format.args = list(big.mark = ",", scientific = FALSE))
+```
+
+If all 63 cities had every house install a 6kW solar panel system, the total number of CO2 emissions would decrease by 7.8%.
+
+<center>
+```{r, echo=F, message=F, warning=F}
+counts <- c(final2$Total.City.Wide.Emissions, final2$Emissions_with)
+barplot(counts, main="CO2 Emissions With and Without Solar Panel Proposal For 63 Cities",
+  xlab="CO2 Emissions (metric tons)", col=c("darkblue","red"), names.arg= c("2016 Total Emissions in 63 Cities", "Total Emissions with Solar Panel Plan"))
+```
+</center>
 
 *****
 
@@ -260,7 +393,11 @@ In order to perform any real analysis on this data and determine magnitude of th
 6. https://www.neighborhoodscout.com/il/alton/real-estate
 7. https://www.census.gov/quickfacts/
 8. https://en.wikipedia.org/wiki/Brisbane,_California
-9. 
+9. https://news.energysage.com/how-much-does-the-average-solar-panel-installation-cost-in-the-u-s/
+10. https://energysolutionsolar.com/blog/how-much-co2-does-solar-panel-save
+11. https://www.eia.gov/electricity/state/california/index.php
+12. https://www.solarreviews.com/blog/how-much-does-a-6kw-solar-power-system-cost-and-how-much-electricity-does-it-produce
+13. https://www.eia.gov/state/print.php?sid=VT
 
 *****
 
