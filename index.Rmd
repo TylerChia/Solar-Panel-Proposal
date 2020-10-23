@@ -413,7 +413,7 @@ As visible in the chart above, when this specific group of homeowners are requir
 ```{r, echo=F, message=F, warning=F}
 counts1 <- c(proposal2$Total.City.Wide.Emissions, proposal2$Emissions_with)
 barplot(counts1, main="CO2 Emissions With and Without 3% Solar Panel Proposal",
-  xlab="CO2 Emissions (metric tons)", col=c("darkblue","red"), names.arg= c("2016 Total Emissions in 63 Cities", "Total Emissions with 3% Solar Panel Plan"))
+  xlab="CO2 Emissions (metric tons)", col=c("darkblue","red"), names.arg= c("2016 Total Emissions in 63 Cities", "Emissions with 3% Solar Panel Plan"))
 ```
 </center>
 
