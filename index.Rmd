@@ -73,13 +73,11 @@ emissions$Long = as.numeric(emissions$Long)
 no_cities = emissions %>% 
   group_by(Country) %>% 
   summarise(Number_of_Cities = n())
-
-knitr::kable(no_cities, caption = "Number of Cities with Observations Per Country", col.names = c("Country","Number of Cities"))
 ```
 
 *****
 
-I first wanted to see how many cities from each country reported their emissions for 2016.  Both the chart above and the graph below display this statistic.  It is clear that out of the 187 cities that reported their carbon emissions in 2016, the United States has the most cities in this dataset at 63 cities.  Other notable cities include Brazil, Canada, Italy, and Portugal.
+I first wanted to see how many cities from each country reported their emissions for 2016.  The graph below displays this statistic.  It is clear that out of the 187 cities that reported their carbon emissions in 2016, the United States has the most cities in this dataset at 63 cities.  Other notable cities include Brazil, Canada, Italy, and Portugal.
 
 *****
 
@@ -264,9 +262,10 @@ percentprice = USAemissions %>%
   select(`City Short Name`, Price, percent_of_price) %>% 
   head(5)
 
-knitr::kable(percentprice, caption = "Cost of 6kw Solar System as % of Typical Housing Price", col.names = c("City","Typical Housing Price", "Solar Panel Cost as % of House Price"),"simple", format.args = list(big.mark = ",", 
+knitr::kable(percentprice, caption = "Cost of 6kW Solar System as % of Typical Housing Price", col.names = c("City","Typical Housing Price", "Solar Panel Cost as % of House Price"),"simple", format.args = list(big.mark = ",", 
   scientific = FALSE))
 ```
+
 *****
 
 The chart above is shown just to give an idea of what the percentage of housing prices are the cost of a 6kW solar panel system.  For example, the typical house in Brisbane, California costs $1,050,747.  The average cost of a 6kw solar panel system is about 1.24% of the housing price.
