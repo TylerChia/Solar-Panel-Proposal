@@ -3,7 +3,9 @@ title: "Solar Panel Proposal"
 author: "Tyler Chia"
 output:
   html_document:
-    theme: darkly
+    toc: true
+    toc_float: true
+    toc_collapsed: true
 ---
 
 ## I: Abstract
