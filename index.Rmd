@@ -408,3 +408,17 @@ barplot(counts, main="CO2 Emissions With and Without Solar Panel Proposal For 63
 
 ```
 
+*****
+
+<center>
+```{r, echo=FALSE}
+library(icon)
+fa("globe", size = 5, color="green")
+```
+</center>
+
+<center>
+tylerchia7@gmail.com
+</center>
+
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
