@@ -1,6 +1,7 @@
 ---
-title: "Solar Panel Proposal"
+title: "Mitigation Strategy: Solar Panel Proposal"
 author: "Tyler Chia"
+date: October 24, 2020
 output:
   html_document:
     toc: true
@@ -9,7 +10,7 @@ output:
 ---
 
 ## I: Abstract
-As we enter the 3rd decade of the 21st century, the disastrous effects of climate change are becoming more and more clear and at some point, will become irreversible.  According to NASA, carbon dioxide levels are the highest they have been in 650,000 years and the global temperature has risen 2 degrees Fahrenheit since 1880.  In addition, the polar ice sheets are losing 427 billion metric tons per year and sea level rises 3.3 millimeters per year.  Scientists have reported that global temperatures could reach an irreversible tipping point by 2030 if drastic measures are not taken to slow down the rapidly occurring climate change.  In addition to environmental impact assessment, mitigation strategies must be set into place in order to insure that future generations will continue to be able to live on a habitable planet.
+As we enter the 3rd decade of the 21st century, the disastrous effects of climate change are becoming more and more apparent and at some point, will become irreversible.  According to NASA, carbon dioxide levels are the highest they have been in 650,000 years and the global temperature has risen 2 degrees Fahrenheit since 1880.  In addition, the polar ice sheets are losing 427 billion metric tons per year and sea level rises 3.3 millimeters per year.  Scientists have reported that global temperatures could reach an irreversible tipping point by 2030 if drastic measures are not taken to slow down the rapidly occurring climate change.  In addition to environmental impact assessment, mitigation strategies must be set into place in order to insure that future generations will continue to be able to live on a habitable planet.
 
 *****
 
@@ -19,7 +20,7 @@ One way to minimize the amount of carbon released into the atmosphere is through
 *****
 
 ## III: Data
-The dataset that I used was from the CDP which is an international non-profit organization based in the United Kingdom, Germany, and the U.S.  The main purpose of the company is to help companies and cities disclose the environmental impact of major corporations.  The data came as a CSV file and has 187 observations for the 187 cities in the dataset.  In addition, the data has 16 variables.
+The dataset that I will be using is from the CDP which is an international non-profit organization based in the United Kingdom, Germany, and the U.S.  The main purpose of the company is to help companies and cities disclose the environmental impact of major corporations.  The data came as a CSV file and has 187 observations for the 187 cities in the dataset.  In addition, the data has 16 variables:
 
 - Account Number
 - City Name
@@ -97,7 +98,7 @@ ggplot(data = no_cities, aes(x = Country, y= Number_of_Cities), las=2) +
 
 *****
 
-Doing a quick arrangement of the data allows me to see what cities within this 2016 dataset produced the most carbon emissions.  Aside from New York City, it appears that the majority of these cities are located in Asia, which is good to note.
+Doing a quick arrangement of the data allows me to see which cities within this 2016 dataset produced the most carbon emissions.  Aside from New York City, it appears that the majority of these cities are located in Asia.
 
 *****
 
@@ -113,7 +114,7 @@ knitr::kable(top5, caption = "Top 5 Cities with Most CO2 Emissions", col.names =
 
 *****
 
-After looking at the dataset a little more, I wanted to plot the location of all these cities on a map so I could see if there were any trends in terms of location for the cities that reported their emissions.  However, I noticed that the city location variable in the dataset was one long string containing both the longitude and latitude coordinate.  Because of this, I was forced to split the column into two separate variables: Longitude and Latitude.  After this, I removed the parenthesis from the columns so my data was ready to be plotted on a world map. 
+After looking at the dataset a little more, I wanted to plot the location of all these cities on a map so I could see if there were any trends in terms of location for the cities that reported their emissions.  However, I noticed that the city location variable in the dataset was one, long string containing both the longitude and latitude coordinate.  Because of this, I was forced to split the column into two separate variables: Longitude and Latitude.  After this, I removed the parenthesis from the columns so my data was ready to be plotted on a world map. 
 
 *****
 
@@ -205,7 +206,9 @@ knitr::kable(top5percapita, caption = "Top 5 U.S. Cities with Most CO2 Emissions
 *****
 
 ### IV.II: Housing Data
-For the housing portion of the data, obviously it would be impossible to find a dataset with the exact sales price of each house in each city.  For that reason, as an alternative, I will be using Zillow.com in order to gain a rough estimate of the average price of what the average price of housing in each city is. I will be using Zillow's Home Value Index.  According to Zillow's website, this index value is seasonally adjusted and only includes the middle price tier of homes.  I took the most recent value they had on the site which was updated September 30, 2020.  I will create a new vector for house prices and add that to the dataframe.  Let us look at the top 5 cities in this dataset with the highest and lowest average price for housing.
+For the housing portion of the data, it would obviously be impossible to find a dataset with the exact sales price of each house in each city.  For that reason, as an alternative, I will be using Zillow.com in order to gain a rough estimate of what the average price of housing in each city is. I will be using Zillow's Home Value Index.  According to Zillow's website, this index value is seasonally adjusted and only includes the middle price tier of homes.  I took the most recent value they had on the site which was updated September 30, 2020.  I will create a new vector for house prices and add it to the dataframe.  
+
+Now, tet us look at the top 5 cities in this dataset with the highest and lowest average price for housing.
 
 ```{r, echo=F, message=F, warning=F}
 prices <- c(753653, 67303, 354073, 479166, 1050747, 177683, 426750, 264923, 198162, 594405, 702173, 709630, 233312, 165692, 2113927, 711361, 180611, 357731, 400251, 238156, 196902, 770097, 259906, 189889, 754942, 549387, 466601, 296590, 213420, 156106, 675496, 656990, 274122, 42486, 659598, 278816, 73686, 641121, 457166, 259906, 296251, 4398248, 768046, 198764, 301333, 298039, 240091, 632271, 804577, 3062157, 190654, 200306, 2237911, 906839, 139496, 190589, 409375, 249656, 1405199, 1684427, 773508, 731656, 219800)
@@ -223,13 +226,13 @@ bot5price = USAemissions %>%
 
 knitr::kable(top5price, caption = "Top 5 Most Expensive Cities for Housing", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Typical Housing Price"),"simple", format.args = list(big.mark = ",", 
   scientific = FALSE))
-knitr::kable(bot5price, caption = "Top 5 Most Cheapest Cities for Housing", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Typical Housing Price"),"simple", format.args = list(big.mark = ",", 
+knitr::kable(bot5price, caption = "Top 5 Cheapest Cities for Housing", col.names = c("City","Total City-Wide Emissions (metric tonnes CO2e)", "Typical Housing Price"),"simple", format.args = list(big.mark = ",", 
   scientific = FALSE))
 ```
 
 *****
 
-Next, I need to add in the total number of houses in each city.  I will create another vector for housing count and add it to the dataframe.  In the chart below, I will display the cities in the dataframe with the most houses.  Disclaimer: all of the housing counts are taken from the United States Census Bureau under households from 2014-2018.  It should be noted that these housing counts are rough estimates.
+Next, I need to add in the total number of houses in each city.  I will create another vector for housing count and add it to the dataframe.  In the chart below, I will display the top 5 cities in the dataframe with the most houses.  Disclaimer: all of the housing counts are taken from the United States Census Bureau under households from 2014-2018.  It should be noted that these housing counts are rough estimates.
 
 *****
 
@@ -250,7 +253,7 @@ knitr::kable(top5count, caption = "Top 5 Cities With Most Houses", col.names = c
 *****
 
 ## V: Analysis and Discussion
-In order to perform any real analysis on this data and determine magnitude of the effects of solar panels on carbon emissions, I first need to research the average price of solar panel installation.  In addition, I will need to understand how much less CO2 emissions are produced when using a single solar panel as opposed to using normal electricity.  With this information I will be able to calculate the ratio of solar panel costs to housing price per city in order to determine in which cities it is financially feasible to enforce a solar panel installation requirement.  The amount of CO2 emissions saved by using solar panels will allow me to simply calculate the percentage change per city in CO2 emissions if certain households are required to install these panels.  In addition, I can calculate the change in carbon emissions in all 63 of these reported U.S. cities if everyone was required to install solar panels.
+In order to perform any real analysis on this data and determine the magnitude of the effects of solar panels on carbon emissions, I first need to research the average price of solar panel installation.  In addition, I will need to understand how much less CO2 emissions are produced when using a solar panel sysetm as opposed to using normal electricity.  With this information I will be able to calculate the ratio of solar panel costs to housing price per city in order to determine in which cities it is financially feasible to enforce a solar panel installation requirement.  The amount of CO2 emissions saved by using solar panels will allow me to simply calculate the percentage change per city in CO2 emissions if certain households are required to install these panels.  In addition, I can calculate the change in carbon emissions in all 63 of these reported U.S. cities if everyone was required to install solar panels.
 
 According to [Energy Sage](https://news.energysage.com/how-much-does-the-average-solar-panel-installation-cost-in-the-u-s/), the average price for a 6 kilowatt solar panel system is **$13,124** in the United States in 2020 after tax credits are taken from the original average price of $17,760.  For this project, I have made the assumption that everyone will install a 6kW solar panel system due to the fact that it is the most frequently installed system according to the research I have done.  
 
@@ -270,13 +273,13 @@ knitr::kable(percentprice, caption = "Cost of 6kW Solar System as % of Typical H
 
 *****
 
-The chart above is shown just to give an idea of what the percentage of housing prices are the cost of a 6kW solar panel system.  For example, the typical house in Brisbane, California costs $1,050,747.  The average cost of a 6kw solar panel system is about 1.24% of the housing price.
+The chart above is shown to give an idea of the cost of a solar panel system in relation to the cost of housing in each city.  For example, the typical house in Brisbane, California costs $1,050,747.  The average cost of a 6kw solar panel system is about 1.24% of the housing price.
 
 *****
 
 Finding the amount of CO2 emissions prevented per solar panel system is a little more difficult to determine due to a number of factors.  Firstly, it is difficult to estimate the production of solar panel system due to the fact that production can vary wildly based on location and placement.  For example, places such as Seattle that obviously do not get a lot of constant sunlight will have less production from their solar panels than states such as Arizona or Nevada where there are deserts and lots of sunlight throughout the majority of the year.  In addition, solar panel production depends on placement factors such as the angle or which side of the roof on which it is placed.  
 
-For these reasons, I will be using a VERY rough estimate taken from [Solar Reviews](https://www.solarreviews.com/blog/how-much-does-a-6kw-solar-power-system-cost-and-how-much-electricity-does-it-produce).  According to their website, a 6kw solar panel system can produce between 6351kWh and 10,074kWh per year in optimal conditions.  With all the varying factors that affect solar panels in mind, I am going to use the lower end of this spectrum as an estimate to how much a 6kW solar panel system produces during the course of one year.  
+For these reasons, I will be using a VERY rough estimate taken from [Solar Reviews](https://www.solarreviews.com/blog/how-much-does-a-6kw-solar-power-system-cost-and-how-much-electricity-does-it-produce).  According to their website, a 6kW solar panel system can produce between 6351kWh and 10,074kWh per year in optimal conditions.  With all the varying factors that affect solar panels in mind, I am going to use the lower end of this spectrum as an estimate to how much a 6kW solar panel system produces during the course of one year.  
 
 **Estimate: 6351kWh per year**
 
@@ -331,11 +334,11 @@ knitr::kable(amountsaved, caption = "CO2 Saved if Every House Has 6kW Solar Syst
 
 *****
 
-Chart above containing the first five cities in the dataset is given as an example for how much less carbon emissions are emitted if every house in each city were to install a 6kW solar panel system.
+Chart above, containing the first five cities in the dataset, is given as an example for how much less carbon emissions are emitted in one year if every house in each city were to install a 6kW solar panel system.
 
 *****
 
-Now that I have the amount of CO2 saved per year per city, I would like to calculate the change that would occur in the total city-wide emissions if every housing owner were to install this solar panel system.
+Now that I have the amount of CO2 saved per year per city, I would like to calculate the percent change that would occur in the total city-wide emissions if every housing owner were to install this solar panel system.
 
 ```{r, echo=F, message=F, warning=F}
 USAemissions = USAemissions %>% 
@@ -351,7 +354,7 @@ knitr::kable(percentdec, caption = "Percent Decrease in CO2 Emissions", col.name
 
 Just to reiterate, the chart above shows the percentage decrease in CO2 emissions from 2016 if every home in each city were required to install a 6kW solar panel system.
 
-One thing that I noticed as an outlier was Indianapolis as it had a 79% decrease in carbon emissions.  At first, I thought my numbers were off so I checked my math.  However, it turns out that in 2018 in Indiana, for every kWh of electricity produced, 1.775 pounds of CO2 were released, which is significantly higher than most cities.  When you take away all that CO2 by implementing solar panels, the percent decrease would therefore be higher than normal.
+One thing that I noticed as an outlier was Indianapolis who had a 79% decrease in carbon emissions.  At first, I thought my numbers were off so I checked my math.  However, it turns out that in 2018 in Indiana, for every kWh of electricity produced, 1.775 pounds of CO2 were released, which is significantly higher than most cities.  When you take away all that CO2 by implementing solar panels, the percent decrease would therefore be higher than normal.
 
 *****
 
@@ -366,7 +369,7 @@ final2 = final %>%
   mutate(Emissions_with = Total.City.Wide.Emissions - Total.CO2.Saved) %>% 
   select(Total.City.Wide.Emissions, Emissions_with)
 
-knitr::kable(final1, caption = "Percent Decrease in CO2 Emissions For all 63 Reported Cities", col.names = c("Total Emissions 2016", "Total Emissions with Solar Panel Plan", "Total CO2 Saved", "Percent Decrease"), "simple", format.args = list(big.mark = ",", scientific = FALSE))
+knitr::kable(final1, caption = "Percent Decrease in CO2 Emissions For All 63 Reported Cities", col.names = c("Total Emissions 2016", "Total Emissions with Solar Panel Plan", "Total CO2 Saved", "Percent Decrease"), "simple", format.args = list(big.mark = ",", scientific = FALSE))
 ```
 
 If all 63 cities had every house install a 6kW solar panel system, the total number of CO2 emissions would decrease by 7.8%.
@@ -374,15 +377,17 @@ If all 63 cities had every house install a 6kW solar panel system, the total num
 <center>
 ```{r, echo=F, message=F, warning=F}
 counts <- c(final2$Total.City.Wide.Emissions, final2$Emissions_with)
-barplot(counts, main="CO2 Emissions With and Without Solar Panel Proposal",
+barplot(counts, main="CO2 Emissions With and Without Solar Panel Plan",
   xlab="CO2 Emissions (metric tons)", col=c("darkblue","red"), names.arg= c("2016 Total Emissions in 63 Cities", "Total Emissions with Solar Panel Plan"))
 ```
 </center>
 
+*****
+
 **Now, finally I can get to the main proposal of this project.**  
 **Proposal:** If the cost of a 6kW solar panel system is less than 3% of the total price of the house, the homeowner is required to install this solar panel system as a way to mitigate the effects of climate change by reducing the amount of carbon emissions released in the atmosphere.
 
-The first mitigation strategy I had with everyone in every city having a solar panel system obviously would not work due to the fact that not everyone can afford a 6kW solar panel system.  For that reason, I came to the conclusion that only certain homeowners should be required to install solar panels based on the cost of their house.  I chose 3% due to the fact that it is relatively financially feasible for these homeowners.  Since the cost of a 6kW solar panel system is on average $13,124, the lowest price of a house that would make the cost of the solar panel system 3% is $437,466.67.  Any housing price lower than that would make the cost of the solar panel system greater than 3% of the price of the house.  
+The first mitigation strategy with everyone in each city having a solar panel system obviously would not work due to the fact that not everyone can afford a 6kW solar panel system.  For that reason, I came to the conclusion that only certain homeowners should be required to install solar panels based on the cost of their house.  I chose 3% due to the fact that it is relatively financially feasible for these homeowners.  Since the cost of a 6kW solar panel system is on average $13,124, the lowest price of a house that would make the cost of the solar panel system 3% is $437,466.67.  Any housing price lower than that would make the cost of the solar panel system greater than 3% of the price of the house.  
 
 I then filtered out all the cities that have the cost of the solar panel system as higher than 3% of the price of the typical house.  This allowed me to find the percentage change in CO2 emissions if all housing owners with a housing price greater than $437,466.67 are required to install a 6kW solar panel system.
 
@@ -407,7 +412,7 @@ proposal2 = proposal %>%
 knitr::kable(proposal1, caption = "Percent Decrease in CO2 Emissions With Proposal in Place", col.names = c("Total Emissions 2016", "Total Emissions with 3% Solar Panel Plan", "Total CO2 Saved", "Percent Decrease"), "simple", format.args = list(big.mark = ",", scientific = FALSE))
 ```
 
-As visible in the chart above, when this specific group of homeowners are required to install a solar panel system, it saves almost 12 million metric tons of CO2 per year across these 63 cities in the dataset.  This is almost a 3% decrease in the amount of carbon emissions when comparing it to the total amount of CO2 produced by these cities in 2016. 
+As visible in the chart above, when this specific group of homeowners are required to install a solar panel system, almost 12 million metric tons of CO2 per year across these 63 cities are saved.  This is almost a 3% decrease in the amount of carbon emissions when comparing it to the total amount of CO2 produced by these cities in 2016. 
 
 <center>
 ```{r, echo=F, message=F, warning=F}
@@ -420,9 +425,9 @@ barplot(counts1, main="CO2 Emissions With and Without 3% Solar Panel Proposal",
 *****
 
 ## VI: Conclusion
-Before I get into the conclusion for this project, I would like to insert a disclaimer here, saying that I understand that this project idea and concept is completely theoretical and based on a lot of assumptions.  Firstly, the data is based on 63 U.S. cities, which is a very small sample size.  The emissions data was from 2016, which was 4 years ago.  The housing data was all very rough estimates taken from Zillow along with the U.S. Census Bureau.  I made the assumption for the solar panel system price based on a 2020 U.S. estimate.  I also made the assumption that everyone will install a 6kW solar panel system due to the fact that it is the most frequently installed system.  In addition, it was hard to come up with an estimate for the production numbers for solar panels due to the fact each solar panel system produces different amounts based on its location and position.  I am still not sure if I estimated too high or too low with 6351kWh per year.  Going back to the housing prices, I made the assumption that the typical housing price based on the Zillow House Index was the price for all the houses in that specific city.  For example, if the price index said the typical home in San Francisco cost $1.4 million, I assumed that all 300,000 of these houses had that price, which is obviously an incorrect way of thinking.  Generalizing the price of homes for the entire city made the data simpler to work with.  Lastly, I did not take into account industrial buildings, business, or apartments who have multiple families living in one building.  Once again, I understand that this project is not completely realistic, but it was created to give me an idea of the environmental benefits of solar panel systems
+Before I get into the conclusion for this project, I would like to insert a disclaimer here, saying that I understand that this project idea and concept is completely theoretical and based on a lot of assumptions.  Firstly, the data is based on 63 U.S. cities, which is a very small sample size.  The emissions data was from 2016, which was 4 years ago.  The housing data was all very rough estimates taken from Zillow along with the U.S. Census Bureau.  I made the assumption for the solar panel system price based on a 2020 U.S. estimate.  I also made the assumption that everyone will install a 6kW solar panel system due to the fact that it is the most frequently installed system.  In addition, it was difficult to come up with an estimate for the production numbers for solar panels due to the fact each solar panel system produces different amounts based on its location and position.  I am still not sure if I estimated too high or too low with 6351kWh per year.  Going back to the housing prices, I made the assumption that the typical housing price based on the Zillow House Index was the price for all the houses in that specific city.  For example, if the price index said the typical home in San Francisco cost $1.4 million, I assumed that all 300,000 of these houses had that price, which is obviously an incorrect way of thinking.  Generalizing the price of homes for the entire city made the data simpler to work with.  Lastly, I did not take into account industrial buildings, business, or apartments who have multiple families living in one building.  Once again, I understand that this project is not completely realistic, but it was created to give me an idea of the environmental benefits of solar panel systems.
 
-To conclude, my proposal was that if the cost of a 6kW solar panel system ($13,124) was less than 3% of the purchase price of the house, those specific homeowners were required to install this solar panel system.  This 3% number was determine based on my opinion that if a person owns a house worth more than $437,466.67, they should be financially able to purchase a 6kW solar panel system as a way to slow the effects of climate change.  When this 3% plan was imposed on the 63 cities in the dataset, only 28 of those cities were required to install solar panels.  This resulted in a 2.76% decrease in carbon emissions when compared to the emissions data from 2016 for those 63 cities.  On a more general level, disregarding the price of their house and forcing all homeowners to install solar panel systems decreased carbon emissions by 7.82% which is significant enough to have an positive effect on our environment.  As stated above, I am not sure if my estimation for the average production of a 6kW solar panel system is accurate but I chose the lower end of the estimate so as to not overpredict the benefits of the panels. If I were to increase the average production of the panels, the total amount of carbon emissions in 2016 would decrease drastically.  With that being said, more mitigation strategies need to be created in order that we stop the effects of climate change before they become irreversible.  Time is running out and drastic measures need to be taken soon whether they be in the form of solar panels or other mitigation strategies.
+To conclude, my proposal was that if the cost of a 6kW solar panel system ($13,124) was less than 3% of the purchase price of the house, these homeowners were required to install this solar panel system.  This 3% number was determine based on my opinion that if a person owns a house worth more than $437,466.67, they should be financially able to purchase a 6kW solar panel system as a way to slow the effects of climate change.  When this 3% plan was imposed on the 63 cities in the dataset, only 28 of those cities were required to install solar panels.  This resulted in a 2.76% decrease in carbon emissions when compared to the emissions data from 2016 for those 63 cities.  On a more general level, disregarding the price of their houses and forcing all homeowners to install solar panel systems decreased carbon emissions by 7.82% which is significant enough to have a positive effect on our environment.  As stated above, I am not sure if my estimation for the average production of a 6kW solar panel system is accurate but I chose the lower end of the estimate so as to not overpredict the benefits of the panels. If I were to increase the average production of the panels, the total amount of carbon emissions in 2016 would decrease drastically.  With that being said, more mitigation strategies need to be created in order that we stop the effects of climate change before they become irreversible.  Time is running out and drastic measures need to be taken soon whether they be in the form of solar panels or other mitigation strategies.
 
 *****
 
