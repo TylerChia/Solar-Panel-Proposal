@@ -80,7 +80,7 @@ no_cities = emissions %>%
 
 *****
 
-I first wanted to see how many cities from each country reported their emissions for 2016.  The graph below displays this statistic.  It is clear that out of the 187 cities that reported their carbon emissions in 2016, the United States has the most cities in this dataset at 63 cities.  Other notable cities include Brazil, Canada, Italy, and Portugal.
+I first wanted to see how many cities from each country reported their emissions for 2016.  The graph below displays this statistic.  It is clear that out of the 187 cities that reported their carbon emissions in 2016, the United States has the most cities in this dataset at 63 cities.  Other notable countries with a significant number of cities include Brazil, Canada, Italy, and Portugal.
 
 *****
 
@@ -159,8 +159,6 @@ ggplot() +
   geom_sf(data = us_emissions, color = "red") +
   coord_sf(datum = st_crs(us_emissions)) +
   labs(title = "U.S. Cities That Disclosed Their City-Wide Emissions in 2016",
-       x = "Longitude",
-       y = "Latitude",
        caption = "Taken from 2016 Citywide Emissions Dataset")
 ```
 </center>
